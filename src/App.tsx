@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AppLayout } from "@/components/AppLayout";
 import Dashboard from "./pages/Dashboard";
 import Classes from "./pages/Classes";
+import ClassDetail from "./pages/ClassDetail";
 import Assignments from "./pages/Assignments";
 import Projects from "./pages/Projects";
 import UploadProject from "./pages/UploadProject";
@@ -13,6 +14,7 @@ import PlagiarismCheck from "./pages/PlagiarismCheck";
 import AIViva from "./pages/AIViva";
 import CompilerLab from "./pages/CompilerLab";
 import Analytics from "./pages/Analytics";
+import ManageUsers from "./pages/ManageUsers";
 import SettingsPage from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
@@ -28,6 +30,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/classes" element={<Classes />} />
+            <Route path="/classes/:id" element={<ClassDetail />} />
             <Route path="/assignments" element={<Assignments />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/upload" element={<UploadProject />} />
@@ -35,6 +38,7 @@ const App = () => (
             <Route path="/ai-viva" element={<AIViva />} />
             <Route path="/compiler" element={<CompilerLab />} />
             <Route path="/analytics" element={<Analytics />} />
+            <Route path="/manage-users" element={<ManageUsers />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
