@@ -3,7 +3,9 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { RoleProvider } from "@/contexts/RoleContext";
 import { AppLayout } from "@/components/AppLayout";
+import PortalSelect from "./pages/PortalSelect";
 import Dashboard from "./pages/Dashboard";
 import Classes from "./pages/Classes";
 import ClassDetail from "./pages/ClassDetail";
@@ -26,23 +28,26 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <AppLayout>
+        <RoleProvider>
           <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/classes" element={<Classes />} />
-            <Route path="/classes/:id" element={<ClassDetail />} />
-            <Route path="/assignments" element={<Assignments />} />
-            <Route path="/projects" element={<Projects />} />
-            <Route path="/upload" element={<UploadProject />} />
-            <Route path="/plagiarism" element={<PlagiarismCheck />} />
-            <Route path="/ai-viva" element={<AIViva />} />
-            <Route path="/compiler" element={<CompilerLab />} />
-            <Route path="/analytics" element={<Analytics />} />
-            <Route path="/manage-users" element={<ManageUsers />} />
-            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/" element={<PortalSelect />} />
+            <Route element={<AppLayout />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/classes" element={<Classes />} />
+              <Route path="/classes/:id" element={<ClassDetail />} />
+              <Route path="/assignments" element={<Assignments />} />
+              <Route path="/projects" element={<Projects />} />
+              <Route path="/upload" element={<UploadProject />} />
+              <Route path="/plagiarism" element={<PlagiarismCheck />} />
+              <Route path="/ai-viva" element={<AIViva />} />
+              <Route path="/compiler" element={<CompilerLab />} />
+              <Route path="/analytics" element={<Analytics />} />
+              <Route path="/manage-users" element={<ManageUsers />} />
+              <Route path="/settings" element={<SettingsPage />} />
+            </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </AppLayout>
+        </RoleProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
