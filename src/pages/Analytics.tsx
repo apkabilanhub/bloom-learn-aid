@@ -1,36 +1,38 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useRole } from "@/contexts/RoleContext";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from "recharts";
 
 const submissionData = [
-  { week: "W1", submissions: 42 },
-  { week: "W2", submissions: 38 },
-  { week: "W3", submissions: 50 },
-  { week: "W4", submissions: 45 },
-  { week: "W5", submissions: 55 },
-  { week: "W6", submissions: 48 },
+  { week: "W1", submissions: 42 }, { week: "W2", submissions: 38 }, { week: "W3", submissions: 50 },
+  { week: "W4", submissions: 45 }, { week: "W5", submissions: 55 }, { week: "W6", submissions: 48 },
 ];
 
 const performanceData = [
-  { month: "Jan", score: 72 },
-  { month: "Feb", score: 78 },
-  { month: "Mar", score: 82 },
-  { month: "Apr", score: 85 },
+  { month: "Jan", score: 72 }, { month: "Feb", score: 78 }, { month: "Mar", score: 82 }, { month: "Apr", score: 85 },
 ];
 
 const aiUsageData = [
-  { name: "Original", value: 88 },
-  { name: "AI-Assisted", value: 12 },
+  { name: "Original", value: 88 }, { name: "AI-Assisted", value: 12 },
+];
+
+const plagiarismTrend = [
+  { month: "Jan", avg: 9 }, { month: "Feb", avg: 7 }, { month: "Mar", avg: 6 }, { month: "Apr", avg: 5 },
 ];
 
 const COLORS = ["hsl(217, 91%, 60%)", "hsl(214, 20%, 90%)"];
 
 export default function Analytics() {
+  const { role } = useRole();
+
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold">Analytics</h1>
-        <p className="text-muted-foreground text-sm">Performance insights and metrics</p>
+        <p className="text-muted-foreground text-sm">
+          {role === "admin" ? "Global platform analytics" : "Performance insights and class metrics"}
+        </p>
       </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card className="glass-card">
           <CardHeader className="pb-2"><CardTitle className="text-base">Weekly Submissions</CardTitle></CardHeader>
@@ -38,9 +40,7 @@ export default function Analytics() {
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={submissionData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(214, 20%, 90%)" />
-                <XAxis dataKey="week" fontSize={12} />
-                <YAxis fontSize={12} />
-                <Tooltip />
+                <XAxis dataKey="week" fontSize={12} /><YAxis fontSize={12} /><Tooltip />
                 <Bar dataKey="submissions" fill="hsl(217, 91%, 60%)" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
@@ -53,9 +53,7 @@ export default function Analytics() {
             <ResponsiveContainer width="100%" height={250}>
               <LineChart data={performanceData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(214, 20%, 90%)" />
-                <XAxis dataKey="month" fontSize={12} />
-                <YAxis fontSize={12} />
-                <Tooltip />
+                <XAxis dataKey="month" fontSize={12} /><YAxis fontSize={12} /><Tooltip />
                 <Line type="monotone" dataKey="score" stroke="hsl(217, 91%, 60%)" strokeWidth={2} dot={{ fill: "hsl(217, 91%, 60%)" }} />
               </LineChart>
             </ResponsiveContainer>
@@ -76,7 +74,22 @@ export default function Analytics() {
           </CardContent>
         </Card>
 
-        <Card className="glass-card">
+        {role === "admin" && (
+          <Card className="glass-card">
+            <CardHeader className="pb-2"><CardTitle className="text-base">Plagiarism Trend</CardTitle></CardHeader>
+            <CardContent>
+              <ResponsiveContainer width="100%" height={250}>
+                <LineChart data={plagiarismTrend}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(214, 20%, 90%)" />
+                  <XAxis dataKey="month" fontSize={12} /><YAxis fontSize={12} /><Tooltip />
+                  <Line type="monotone" dataKey="avg" stroke="hsl(0, 84%, 60%)" strokeWidth={2} />
+                </LineChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+        )}
+
+        <Card className={`glass-card ${role === "faculty" ? "" : "lg:col-span-2"}`}>
           <CardHeader className="pb-2"><CardTitle className="text-base">Class Performance</CardTitle></CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -87,10 +100,7 @@ export default function Analytics() {
                 { name: "CS2301 - Data Structures", avg: 75 },
               ].map((c) => (
                 <div key={c.name} className="space-y-1">
-                  <div className="flex justify-between text-sm">
-                    <span>{c.name}</span>
-                    <span className="text-muted-foreground">{c.avg}%</span>
-                  </div>
+                  <div className="flex justify-between text-sm"><span>{c.name}</span><span className="text-muted-foreground">{c.avg}%</span></div>
                   <div className="h-2 bg-muted rounded-full overflow-hidden">
                     <div className="h-full bg-primary rounded-full transition-all" style={{ width: `${c.avg}%` }} />
                   </div>

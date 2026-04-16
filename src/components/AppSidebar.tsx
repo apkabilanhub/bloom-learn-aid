@@ -1,10 +1,11 @@
 import {
   LayoutDashboard, BookOpen, FileText, FolderKanban, Upload, ShieldCheck,
-  MessageSquare, Terminal, BarChart3, Settings, Users, Shield,
+  MessageSquare, Terminal, BarChart3, Settings, Users, LogOut,
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useRole, UserRole } from "@/contexts/RoleContext";
+import { Button } from "@/components/ui/button";
 import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent,
   SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar,
@@ -18,7 +19,7 @@ interface NavItem {
 }
 
 const items: NavItem[] = [
-  { title: "Dashboard", url: "/", icon: LayoutDashboard, roles: ["admin", "student", "faculty"] },
+  { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard, roles: ["admin", "student", "faculty"] },
   { title: "Classes", url: "/classes", icon: BookOpen, roles: ["admin", "student", "faculty"] },
   { title: "Assignments", url: "/assignments", icon: FileText, roles: ["student", "faculty", "admin"] },
   { title: "Projects", url: "/projects", icon: FolderKanban, roles: ["student", "faculty", "admin"] },
@@ -35,6 +36,7 @@ export function AppSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
   const location = useLocation();
+  const navigate = useNavigate();
   const { role } = useRole();
 
   const filtered = items.filter((item) => item.roles.includes(role));
@@ -65,6 +67,17 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+        <div className="mt-auto p-4">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="w-full justify-start text-muted-foreground"
+            onClick={() => navigate("/")}
+          >
+            <LogOut className="h-4 w-4 mr-2" />
+            {!collapsed && "Switch Portal"}
+          </Button>
+        </div>
       </SidebarContent>
     </Sidebar>
   );
